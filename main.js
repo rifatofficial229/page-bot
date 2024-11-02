@@ -32,12 +32,15 @@ logger.info("Admin: " + global.functions.config.admin);
 logger.info("A simple page bot");
 
 
-async function handleMessage(sender_psid, received_message) {
+async function handleMessage(sender_psid, received_message, webhook_event) {
 //  if (received_message.is_echo) return;
 
   const { prefix } = global.functions.config;
-
-  if (received_message.attachments && received_message.attachments.length > 0) {
+  console.log("EVENT: ",webhook_event);
+  
+ /* 
+ // Example of Attachment //
+ if (received_message.attachments && received_message.attachments.length > 0) {
     for (const attachment of received_message.attachments) {
       const attachmentType = attachment.type;
       const attachmentUrl = attachment.payload.url;
@@ -50,7 +53,7 @@ async function handleMessage(sender_psid, received_message) {
       });
     }
     return;
-  }
+  }*/
   const text = received_message.text;
 
   // [ onChat ] //
@@ -60,6 +63,7 @@ async function handleMessage(sender_psid, received_message) {
       try {
         await command.onChat({
           event: received_message,
+          fullevent: webhook_event,
           message: {
             senderID: sender_psid,
             text,
@@ -75,8 +79,9 @@ async function handleMessage(sender_psid, received_message) {
       }
     }
   }
-  if (received_message.text && received_message.text.startsWith(prefix)) {
-    const args = received_message.text.slice(prefix.length).trim().split(/ +/);
+  const body = received_message.text;
+  if (body && body.startsWith(prefix)) {
+    const args = body.slice(prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
 
     const command =
@@ -84,7 +89,7 @@ async function handleMessage(sender_psid, received_message) {
       global.functions.commands.get(global.functions.aliases.get(commandName));
 
     if (command) {
- const body = received_message.text;
+ 
 const { usePrefix = true ,role = 0 } = command.config;
     if (role === 1 && !hasPermission(sender_psid)) {
         await reply(sender_psid, "You don’t have permission to use this command.");
@@ -99,6 +104,7 @@ const { usePrefix = true ,role = 0 } = command.config;
       try {
         await command.onStart({
           event: received_message,
+          fullevent: webhook_event,
           args,
           message: {
             senderID: sender_psid,
