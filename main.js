@@ -80,12 +80,11 @@ async function handleMessage(sender_psid, received_message, webhook_event) {
     }
   }
   const body = received_message.text;
-  if (body && body.startsWith(prefix)) {
-    const args = body.slice(prefix.length).trim().split(/ +/);
+  if (!body) return;
+    const args = body.startsWith(prefix) ? body.slice(prefix.length).trim().split(/ +/) : body.trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
 
-    const command =
-      global.functions.commands.get(commandName) ||
+    const command = global.functions.commands.get(commandName) ||
       global.functions.commands.get(global.functions.aliases.get(commandName));
 
     if (command) {
@@ -119,10 +118,9 @@ const { usePrefix = true ,role = 0 } = command.config;
       } catch (error) {
         console.error(`Error executing command ${commandName}:`, error);
       }
-    } else {
+    } else if(!command && body.startsWith(prefix)){
       await reply(sender_psid, commandName ? `The command "${commandName}" does not exist. Type ${prefix}help to see available commands.` : `The command you are using does not exist System, type ${prefix}help to see all available commands.`);
     }
-  }
 }
 
 function hasPermission(uid) {
