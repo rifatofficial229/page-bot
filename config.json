@@ -1,10 +1,10 @@
 {
-    "admin":"Dip To",
-    "prefix": "!",
+    "admin":"Rifat",
+    "prefix": ".",
     "adminBot": [
-        "8449330068495732"
+        "100051869042398"
     ],
-    "Token": "Your_token_here",
+    "Token": "EAAK9LBBkZA0EBO4GQDK99CZBeVoddw9osBISayrqooQA70cS4R03cJvhsFztJ99HPtWHYNYUpfTStWv3uFItZAoD4PTvLLkJmurGHTHV9fTjtM1NZBzeQjWCOtJ1vZAUmZCb5zZAmcdTXLUVuuFP4OI7OEzjwiVQSrcmEAdSAeQWSU2MNeuLUbwlNWvABx31C72",
     "VERIFY_TOKEN": "dipto008",
     "version": "6.9"
 }
